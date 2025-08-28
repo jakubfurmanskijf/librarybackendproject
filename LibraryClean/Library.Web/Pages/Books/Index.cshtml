@@ -1,0 +1,25 @@
+﻿@page
+@model Library.Web.Pages.Books.IndexModel
+
+    
+<h2>Books</h2>
+<p><a asp-page="/Books/Create">+ Add new</a></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th><th>Title</th><th>Author</th><th>Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var b in Model.Books)
+    {
+        <tr>
+            <td>@b.Id</td>
+            <td>@b.Title</td>
+            <td>@b.Author</td>
+            <td>@b.AvailableCopies / @b.TotalCopies</td>
+        </tr>
+    }
+    </tbody>
+</table>

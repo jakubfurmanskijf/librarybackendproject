@@ -1,0 +1,25 @@
+﻿@page
+@model Library.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+<h2>Login</h2>
+
+<form method="post">
+    <div>
+        <label>Username</label>
+        <input asp-for="Input.Username" />
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Input.Password" type="password" />
+    </div>
+    <button type="submit">Sign in</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}
+
+<p>Demo accounts: <code>admin / admin123</code> or <code>user / user123</code></p>
