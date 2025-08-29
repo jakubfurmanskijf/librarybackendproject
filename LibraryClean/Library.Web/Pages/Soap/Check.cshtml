@@ -1,0 +1,24 @@
+﻿@page
+@model Library.Web.Pages.Soap.CheckModel
+<h2>SOAP Check</h2>
+
+<form method="post">
+    <label>ISBN:</label>
+    <input asp-for="Isbn" />
+    <button type="submit">Check</button>
+</form>
+
+@if (Model.HasResult)
+{
+    <p><strong>Ping:</strong> @Model.Ping</p>
+    <p><strong>Available:</strong> @(Model.Available ? "Yes" : "No")</p>
+    @if (Model.Book is not null)
+    {
+        <p><strong>Book:</strong> @Model.Book.Title by @Model.Book.Author (@Model.Book.Year)</p>
+        <p>Copies: @Model.Book.AvailableCopies / @Model.Book.TotalCopies</p>
+    }
+    else
+    {
+        <p>No book found for ISBN @Model.Isbn</p>
+    }
+}

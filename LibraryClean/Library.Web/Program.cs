@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // --- Config ---
 var apiBase = builder.Configuration["Api:BaseUrl"] ?? "https://localhost:7221";
+var soapBase = apiBase.TrimEnd('/') + "/soap";
 
 // --- Auth: Cookie for the web app (UI) ---
 builder.Services
@@ -27,14 +28,14 @@ builder.Services.AddSession(o =>
     o.Cookie.IsEssential = true;
 });
 
-// --- HttpClient to call your API ---
-builder.Services.AddHttpClient("Api", c =>
-{
-    c.BaseAddress = new Uri(apiBase);
-});
+// --- HttpClients ---
+builder.Services.AddHttpClient("Api", c => { c.BaseAddress = new Uri(apiBase); });
+// SOAP client (manual)
+builder.Services.AddHttpClient("Soap", c => { c.BaseAddress = new Uri(soapBase); });
 
+// --- App services ---
 builder.Services.AddScoped<Library.Web.Services.JwtAuthService>();
-
+builder.Services.AddScoped<Library.Web.Services.SoapClientService>(); // <— add this
 
 // --- Razor Pages ---
 builder.Services.AddRazorPages();

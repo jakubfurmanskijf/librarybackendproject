@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SoapCore;
+using Library.Api.Soap;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +70,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddSoapCore();
+builder.Services.AddScoped<ILibrarySoapService, LibrarySoapService>();
+
 var app = builder.Build();
 
 // Seed the in-memory db
@@ -80,6 +85,8 @@ using (var scope = app.Services.CreateScope())
 // ---- Pipeline ----
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseSoapEndpoint<ILibrarySoapService>("/soap", new SoapEncoderOptions());
 
 app.UseHttpsRedirection(); // optional but nice
 
