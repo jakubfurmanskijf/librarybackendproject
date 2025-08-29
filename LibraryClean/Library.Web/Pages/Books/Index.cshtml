@@ -7,19 +7,28 @@
 
 <table>
     <thead>
-    <tr>
-        <th>Id</th><th>Title</th><th>Author</th><th>Available</th>
-    </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Available</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var b in Model.Books)
-    {
-        <tr>
-            <td>@b.Id</td>
-            <td>@b.Title</td>
-            <td>@b.Author</td>
-            <td>@b.AvailableCopies / @b.TotalCopies</td>
-        </tr>
-    }
+        @foreach (var b in Model.Books)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@b.Title</td>
+                <td>@b.Author</td>
+                <td>@b.AvailableCopies / @b.TotalCopies</td>
+                <td>
+                    <a asp-page="/Books/Edit" asp-route-id="@b.Id">Edit</a>
+                    |
+                    <a asp-page="/Books/Delete" asp-route-id="@b.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

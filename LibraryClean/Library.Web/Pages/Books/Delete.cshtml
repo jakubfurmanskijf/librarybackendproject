@@ -1,0 +1,18 @@
+﻿@page "{id:int}"
+@model Library.Web.Pages.Books.DeleteModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+
+<h2>Delete Book</h2>
+
+<p>Are you sure you want to delete <strong>@Model.Book?.Title</strong> by @Model.Book?.Author?</p>
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Delete</button>
+    <a asp-page="/Books/Index">Cancel</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}

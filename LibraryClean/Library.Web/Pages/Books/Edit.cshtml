@@ -1,0 +1,21 @@
+﻿@page "{id:int}"
+@model Library.Web.Pages.Books.EditModel
+
+<h2>Edit Book</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Book.Id" />
+    <div><label>ISBN</label> <input asp-for="Book.Isbn" /></div>
+    <div><label>Title</label> <input asp-for="Book.Title" /></div>
+    <div><label>Author</label> <input asp-for="Book.Author" /></div>
+    <div><label>Year</label> <input asp-for="Book.Year" type="number" /></div>
+    <div><label>Total Copies</label> <input asp-for="Book.TotalCopies" type="number" /></div>
+    <div><label>Available Copies</label> <input asp-for="Book.AvailableCopies" type="number" /></div>
+    <button type="submit">Save</button>
+    <a asp-page="/Books/Index">Cancel</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}
