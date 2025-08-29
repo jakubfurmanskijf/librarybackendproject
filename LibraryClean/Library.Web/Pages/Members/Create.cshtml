@@ -1,0 +1,17 @@
+﻿@page
+@model Library.Web.Pages.Members.CreateModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+
+<h2>Create Member</h2>
+
+<form method="post">
+    <div><label>Name</label>  <input asp-for="Member.FullName" /></div>
+    <div><label>Email</label> <input asp-for="Member.Email" /></div>
+    <button type="submit">Create</button>
+    <a asp-page="/Members/Index">Cancel</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}

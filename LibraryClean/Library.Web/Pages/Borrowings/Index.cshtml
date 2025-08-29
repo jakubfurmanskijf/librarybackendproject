@@ -1,0 +1,35 @@
+﻿@page
+@model Library.Web.Pages.Borrowings.IndexModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<h2>Borrowings</h2>
+<p>
+    <a asp-page="/Borrowings/Borrow">Borrow</a> |
+    <a asp-page="/Borrowings/Return">Return</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Book</th>
+            <th>Member</th>
+            <th>Borrowed</th>
+            <th>Due</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model.Items)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@b.Book?.Title</td>
+                <td>@b.Member?.FullName</td>
+                <td>@b.BorrowedAtUtc.ToLocalTime()</td>
+                <td>@b.DueAtUtc.ToLocalTime()</td>
+                <td>@(b.IsReturned ? "Returned" : (b.IsOverdue ? "Overdue" : "Borrowed"))</td>
+            </tr>
+        }
+    </tbody>
+</table>

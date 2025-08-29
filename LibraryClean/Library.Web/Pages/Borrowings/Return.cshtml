@@ -1,0 +1,20 @@
+﻿@page
+@model Library.Web.Pages.Borrowings.ReturnModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+
+<h2>Return a book</h2>
+
+<form method="post">
+    <div><label>Borrowing Id</label> <input asp-for="BorrowingId" type="number" /></div>
+    <button type="submit">Return</button>
+    <a asp-page="/Borrowings/Index">Cancel</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p>@Model.Message</p>
+}
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}
