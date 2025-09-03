@@ -1,11 +1,13 @@
 using Library.Web.Models;
 using Library.Web.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 
 namespace Library.Web.Pages.Members;
 
+[Authorize(Roles = "Admin")]
 public class IndexModel : PageModel
 {
     public List<MemberDto> Members { get; set; } = new();

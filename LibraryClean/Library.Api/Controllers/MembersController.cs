@@ -8,6 +8,7 @@ namespace Library.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class MembersController : ControllerBase
 {
     private readonly LibraryDbContext _db;

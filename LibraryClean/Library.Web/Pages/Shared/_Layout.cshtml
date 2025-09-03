@@ -28,15 +28,14 @@
                             <a asp-page="/Soap/Check">SOAP</a> |
 
                             <a asp-page="/Books/Index">Books</a> |
-                            <a asp-page="/Members/Index">Members</a> |
 
                             @if (User.IsInRole("Admin"))
                             {
                                 <a asp-page="/Borrowings/Index">Borrowings</a>
+                                <a asp-page="/Members/Index">Members</a>
                                             
                             }
                         
-                            <a asp-page="/Soap/Check">SOAP</a> |
                             <a asp-page="/Account/Logout">Logout</a>
 
                         </li>

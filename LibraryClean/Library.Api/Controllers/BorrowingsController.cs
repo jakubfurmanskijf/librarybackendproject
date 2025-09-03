@@ -11,6 +11,7 @@ public record ReturnRequest(int BorrowingId);
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class BorrowingsController : ControllerBase
 {
     private readonly LibraryDbContext _db;
