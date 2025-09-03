@@ -5,10 +5,26 @@
 <h2>Borrow a book</h2>
 
 <form method="post">
-    <div><label>Member Id</label> <input asp-for="MemberId" type="number" /></div>
-    <div><label>Book Id</label>   <input asp-for="BookId" type="number" /></div>
-    <div><label>Days</label>      <input asp-for="Days" type="number" value="14" /></div>
-    <button type="submit">Borrow</button>
+    <div>
+        <label for="MemberId">Member</label>
+        <select asp-for="MemberId" asp-items="Model.MemberOptions"></select>
+    </div>
+
+    <div>
+        <label for="BookId">Book</label>
+        <select asp-for="BookId" asp-items="Model.BookOptions"></select>
+        @if (Model.BookOptions.Count == 0)
+        {
+            <div><em>No books available to borrow right now.</em></div>
+        }
+    </div>
+
+    <div>
+        <label>Days</label>
+        <input asp-for="Days" type="number" value="14" />
+    </div>
+
+    <button type="submit" @(Model.BookOptions.Count == 0 ? "disabled" : null)>Borrow</button>
     <a asp-page="/Borrowings/Index">Cancel</a>
 </form>
 
