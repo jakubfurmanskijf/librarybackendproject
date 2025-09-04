@@ -24,7 +24,6 @@ public class BorrowModel : PageModel
     private readonly IHttpClientFactory _http;
     public BorrowModel(IHttpClientFactory http) => _http = http;
 
-    // Minimal DTOs (local) to keep this page self-contained
     private record MemberDto(int Id, string FullName, string Email);
     private record BookDto(int Id, string Title, string Author, int TotalCopies, int AvailableCopies);
 
@@ -35,7 +34,6 @@ public class BorrowModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        // Do NOT check BookOptions.Count here — it's empty on POST before we reload lists.
         var client = ApiClientFactory.Create(HttpContext, _http);
         var payload = new { memberId = MemberId, bookId = BookId, days = Days };
 
@@ -46,7 +44,6 @@ public class BorrowModel : PageModel
 
         if (!resp.IsSuccessStatusCode)
         {
-            // Optional: decode common failure statuses to nicer messages
             Error = resp.StatusCode switch
             {
                 HttpStatusCode.NotFound => "Member or book not found.",
@@ -55,7 +52,6 @@ public class BorrowModel : PageModel
                 _ => $"Borrow failed: {(int)resp.StatusCode}"
             };
 
-            // Reload lists so the form can be re-rendered with dropdowns
             return await LoadListsAndShowAsync();
         }
 
@@ -63,12 +59,10 @@ public class BorrowModel : PageModel
         return RedirectToPage("/Borrowings/Index");
     }
 
-    // Helper to load members & available books into dropdowns
     private async Task<IActionResult> LoadListsAndShowAsync()
     {
         var client = ApiClientFactory.Create(HttpContext, _http);
 
-        // --- Members ---
         var mResp = await client.GetAsync("/api/Members");
         if (mResp.StatusCode == HttpStatusCode.Unauthorized) return Challenge();
         if (mResp.StatusCode == HttpStatusCode.Forbidden) return Forbid();
@@ -81,7 +75,6 @@ public class BorrowModel : PageModel
         if (MemberOptions.Count > 0 && MemberId == 0)
             MemberId = int.Parse(MemberOptions[0].Value);
 
-        // --- Books (only those with available copies) ---
         var bResp = await client.GetAsync("/api/Books");
         if (bResp.StatusCode == HttpStatusCode.Unauthorized) return Challenge();
         if (bResp.StatusCode == HttpStatusCode.Forbidden) return Forbid();

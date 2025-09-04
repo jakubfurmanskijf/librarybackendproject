@@ -20,15 +20,15 @@ public class IndexModel : PageModel
         var resp = await client.GetAsync("/api/Borrowings");
 
         if (resp.StatusCode == HttpStatusCode.Unauthorized)
-            return Challenge();   // -> sends to /Account/Login with returnUrl
+            return Challenge(); 
 
         if (resp.StatusCode == HttpStatusCode.Forbidden)
-            return Forbid();      // -> sends to AccessDeniedPath
+            return Forbid();     
 
         if (!resp.IsSuccessStatusCode)
         {
             Items = new();
-            return Page();        // or show an error message if you prefer
+            return Page();       
         }
 
         Items = await resp.Content.ReadFromJsonAsync<List<BorrowingDto>>() ?? new();

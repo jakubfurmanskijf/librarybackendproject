@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Config ---
+// config 
 var apiBase = builder.Configuration["Api:BaseUrl"] ?? "https://localhost:7221";
 var soapBase = apiBase.TrimEnd('/') + "/soap";
 
-// --- Auth: Cookie for the web app (UI) ---
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(o =>
@@ -20,7 +19,6 @@ builder.Services
 
 builder.Services.AddAuthorization(); // we’ll use [Authorize] and roles
 
-// --- Session (to store JWT token) ---
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(o =>
 {
@@ -28,16 +26,15 @@ builder.Services.AddSession(o =>
     o.Cookie.IsEssential = true;
 });
 
-// --- HttpClients ---
 builder.Services.AddHttpClient("Api", c => { c.BaseAddress = new Uri(apiBase); });
-// SOAP client (manual)
+
 builder.Services.AddHttpClient("Soap", c => { c.BaseAddress = new Uri(soapBase); });
 
-// --- App services ---
-builder.Services.AddScoped<Library.Web.Services.JwtAuthService>();
-builder.Services.AddScoped<Library.Web.Services.SoapClientService>(); // <— add this
 
-// --- Razor Pages ---
+builder.Services.AddScoped<Library.Web.Services.JwtAuthService>();
+builder.Services.AddScoped<Library.Web.Services.SoapClientService>(); 
+
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
