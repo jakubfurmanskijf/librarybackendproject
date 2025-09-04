@@ -1,20 +1,42 @@
 ﻿@page
 @model Library.Web.Pages.Members.IndexModel
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@{
+    ViewData["Title"] = "Members";
+}
 
-<h2>Members</h2>
-<p><a asp-page="/Members/Create">+ Add new member</a></p>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Members</h2>
+    <a class="btn btn-primary" asp-page="/Members/Create">+ Add new member</a>
+</div>
 
-<table>
-    <thead><tr><th>Id</th><th>Name</th><th>Email</th></tr></thead>
-    <tbody>
-        @foreach (var m in Model.Members)
-        {
-            <tr>
-                <td>@m.Id</td>
-                <td>@m.FullName</td>
-                <td>@m.Email</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if ((Model.Members?.Count ?? 0) == 0)
+{
+    <div class="alert alert-light border">
+        No members yet. Use <strong>Add new member</strong> to create one.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:70px;">Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model.Members!)
+                {
+                    <tr>
+                        <td>@m.Id</td>
+                        <td class="fw-semibold">@m.FullName</td>
+                        <td>@m.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

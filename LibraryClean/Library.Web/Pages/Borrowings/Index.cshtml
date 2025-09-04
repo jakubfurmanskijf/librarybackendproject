@@ -1,35 +1,57 @@
 ﻿@page
 @model Library.Web.Pages.Borrowings.IndexModel
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@{
+    ViewData["Title"] = "Borrowings";
+    string Dt(DateTime d) => d.ToLocalTime().ToString("dd.MM.yyyy HH:mm");
+}
 
-<h2>Borrowings</h2>
-<p>
-    <a asp-page="/Borrowings/Borrow">Borrow</a> |
-    <a asp-page="/Borrowings/Return">Return</a>
-</p>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Borrowings</h2>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-page="/Borrowings/Borrow">Borrow</a>
+        <a class="btn btn-outline-primary" asp-page="/Borrowings/Return">Return</a>
+    </div>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Book</th>
-            <th>Member</th>
-            <th>Borrowed</th>
-            <th>Due</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model.Items)
-        {
-            <tr>
-                <td>@b.Id</td>
-                <td>@b.Book?.Title</td>
-                <td>@b.Member?.FullName</td>
-                <td>@b.BorrowedAtUtc.ToLocalTime()</td>
-                <td>@b.DueAtUtc.ToLocalTime()</td>
-                <td>@(b.IsReturned ? "Returned" : (b.IsOverdue ? "Overdue" : "Borrowed"))</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if ((Model.Items?.Count ?? 0) == 0)
+{
+    <div class="alert alert-light border">
+        No borrowings yet.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:70px;">Id</th>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Borrowed</th>
+                    <th>Due</th>
+                    <th style="width:140px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model.Items!)
+                {
+                    var statusText = b.IsReturned ? "Returned" : (b.IsOverdue ? "Overdue" : "Borrowed");
+                    var badgeClass = b.IsReturned ? "bg-success" : (b.IsOverdue ? "bg-danger" : "bg-secondary");
+
+                    <tr>
+                        <td>@b.Id</td>
+                        <td class="fw-semibold">@b.Book?.Title</td>
+                        <td>@b.Member?.FullName</td>
+                        <td>@Dt(b.BorrowedAtUtc)</td>
+                        <td>@Dt(b.DueAtUtc)</td>
+                        <td>
+                            <span class="badge @badgeClass">@statusText</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

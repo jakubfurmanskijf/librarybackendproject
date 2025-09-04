@@ -1,34 +1,56 @@
 ﻿@page
 @model Library.Web.Pages.Books.IndexModel
+@{
+    ViewData["Title"] = "Books";
+}
 
-    
-<h2>Books</h2>
-<p><a asp-page="/Books/Create">+ Add new book</a></p>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Books</h2>
+    <a class="btn btn-primary" asp-page="/Books/Create">+ Add new book</a>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Available</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model.Books)
-        {
-            <tr>
-                <td>@b.Id</td>
-                <td>@b.Title</td>
-                <td>@b.Author</td>
-                <td>@b.AvailableCopies / @b.TotalCopies</td>
-                <td>
-                    <a asp-page="/Books/Edit" asp-route-id="@b.Id">Edit</a>
-                    |
-                    <a asp-page="/Books/Delete" asp-route-id="@b.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if ((Model.Books?.Count ?? 0) == 0)
+{
+    <div class="alert alert-light border">
+        No books yet. Use <strong>Add new book</strong> to create the first one.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:70px;">Id</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th style="width:160px;">Available</th>
+                    <th style="width:160px;" class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model.Books!)
+                {
+                    var available = b.AvailableCopies;
+                    var total = b.TotalCopies;
+                    var badgeClass = available > 0 ? "bg-success" : "bg-danger";
+
+                    <tr>
+                        <td>@b.Id</td>
+                        <td class="fw-semibold">@b.Title</td>
+                        <td>@b.Author</td>
+                        <td>
+                            <span class="badge @badgeClass">@available / @total</span>
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary me-1"
+                               asp-page="/Books/Edit" asp-route-id="@b.Id">Edit</a>
+                            <a class="btn btn-sm btn-outline-danger"
+                               asp-page="/Books/Delete" asp-route-id="@b.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
