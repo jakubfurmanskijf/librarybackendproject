@@ -1,10 +1,50 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
+<div class="py-5 text-center">
+    <h1 class="display-5 fw-semibold">Library Management System</h1>
+    <p class="lead text-muted mt-2">
+        A project built with ASP.NET&nbsp;Core Razor Pages, Web API (JWT), and a SOAP client.
+    </p>
+</div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row g-3 justify-content-center">
+    <div class="col-md-3">
+        <a class="card text-decoration-none h-100" asp-page="/Books/Index">
+            <div class="card-body">
+                <h5 class="card-title">Books</h5>
+                <p class="card-text text-muted">Browse and manage books.</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a class="card text-decoration-none h-100" asp-page="/Soap/Check">
+            <div class="card-body">
+                <h5 class="card-title">SOAP</h5>
+                <p class="card-text text-muted">Check SOAP service (ping &amp; availability).</p>
+            </div>
+        </a>
+    </div>
+
+    @if (User?.IsInRole("Admin") ?? false)
+    {
+        <div class="col-md-3">
+            <a class="card text-decoration-none h-100" asp-page="/Borrowings/Index">
+                <div class="card-body">
+                    <h5 class="card-title">Borrowings</h5>
+                    <p class="card-text text-muted">Borrow / return and view history.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="card text-decoration-none h-100" asp-page="/Members/Index">
+                <div class="card-body">
+                    <h5 class="card-title">Members</h5>
+                    <p class="card-text text-muted">Manage library members.</p>
+                </div>
+            </a>
+        </div>
+    }
 </div>
